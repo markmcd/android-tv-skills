@@ -3,7 +3,7 @@
 # Android TV skill
 
 [![License](https://img.shields.io/badge/License-Apache-green.svg)](LICENSE)
-[Agent-Agnostic](https://img.shields.io/badge/Agent-Agnostic-blueviolet)
+![Agent-Agnostic](https://img.shields.io/badge/Agent-Agnostic-green)
 [![Skills](https://img.shields.io/badge/skills.sh-Compatible-green)](https://skills.sh)
 
 <br>
@@ -33,11 +33,8 @@ Once installed and enabled, you can get your agent to:
  * Deep scan for devices that do not have ADB enabled, including ChromeCast and
    speakers
  * Launch and control apps using your agent: "5 minutes before kickoff, start the Sportsball app and navigate to the AUS v USA game and start playing"
- * Queries and controls OS `MediaSession` data, runs `uiautomator` and if necessary, takes screenshots to determine what's running[1]
+ * Queries and controls OS `MediaSession` data, runs `uiautomator` and if necessary, takes screenshots to determine what's running
  * Or just get your agent to rickroll your roommates: "Rickroll every display on this network"
-
-1: note that this doesn't always work, e.g. DRM clients like Widevine can block screenshots, and apps like Netflix don't share Media info.
-
 
 ---
 
@@ -103,6 +100,21 @@ All operations are handled by the unified, JSON-formatted `adb_tool.py` script.
 ```
 > play https://www.youtube.com/watch?v=dQw4w9WgXcQ on all TVs.
 ```
+
+## A note on DRM
+
+Note that some app introspection may be limited due to DRM. Clients like
+Widevine typically block screenshots, preventing queries like "What's on the TV"
+from working.
+
+This can be compounded with apps like Netflix, that do not publish current media
+info (like video name) to the OS [`MediaSession`
+](https://developer.android.com/media/media3/session/control-playback).
+Additionally, Netflix also uses a custom canvas to render their app UI, which
+also blocks tools like `uiautomator` from inspecting the UI hierarchy.
+
+DRM does not block controls, or anything you would be able to do with a remote,
+so most features will still work.
 
 ## Disclaimer
 
